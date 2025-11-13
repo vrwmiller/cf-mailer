@@ -1,0 +1,14 @@
+name = "cf-mailer"
+main = "src/index.js"
+compatibility_date = "2024-11-13"
+
+[env.production.vars]
+# Set these in your Cloudflare dashboard or via wrangler secret
+# SMTP2GO_API_KEY = "your-api-key-here"
+# ALLOWED_ORIGINS = "https://yourdomain.com,https://www.yourdomain.com"
+
+[env.staging.vars]
+# Staging environment variables
+
+[triggers]
+crons = []
