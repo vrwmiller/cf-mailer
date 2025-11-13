@@ -1,0 +1,55 @@
+name: Deploy cf-mailer
+
+on:
+  push:
+    branches:
+      - main
+      - '**' # All branches
+    paths:
+      - 'src/**'
+      - 'templates/**'
+      - 'wrangler.toml'
+      - 'package.json'
+  pull_request:
+    branches:
+      - main
+      - '**'
+    paths:
+      - 'src/**'
+      - 'templates/**'
+      - 'wrangler.toml'
+      - 'package.json'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy cf-mailer
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: .
+          secrets: |
+            SMTP2GO_API_KEY
+            TO_EMAIL
+            FROM_EMAIL
+          environment: ${{ github.ref_name != 'main' && github.ref_name || '' }}
+        env:
+          SMTP2GO_API_KEY: ${{ secrets.SMTP2GO_API_KEY }}
+          TO_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
