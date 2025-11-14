@@ -44,11 +44,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: .
-          secrets: |
-            SMTP2GO_API_KEY
-            TO_EMAIL
-            FROM_EMAIL
-          environment: ${{ github.ref_name != 'main' && github.ref_name || '' }}
         env:
           SMTP2GO_API_KEY: ${{ secrets.SMTP2GO_API_KEY }}
           TO_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
