@@ -96,7 +96,7 @@ function validateFormData(data, config) {
 /**
  * Generate email template with proper formatting
  */
-function generateEmailTemplate(formData, config) {
+function generateEmailTemplate(formData, config, referer = null) {
   const timestamp = new Date().toISOString();
 
   const htmlTemplate = `
@@ -121,6 +121,7 @@ function generateEmailTemplate(formData, config) {
         <div class="header">
             <h2>New Contact Form Submission</h2>
             <p>Received: ${timestamp}</p>
+            ${referer ? `<p>From: ${escapeHtml(referer)}</p>` : ''}
         </div>
 
         <div class="field">
@@ -163,7 +164,8 @@ function generateEmailTemplate(formData, config) {
   const textTemplate = `
 New Contact Form Submission
 Received: ${timestamp}
-
+${referer ? `From: ${referer}
+` : ''}
 Name: ${formData.name}
 Email: ${formData.email}
 ${formData.phone ? `Phone: ${formData.phone}\n` : ''}${formData.subject ? `Subject: ${formData.subject}\n` : ''}
@@ -196,8 +198,8 @@ function escapeHtml(text) {
 /**
  * Send email via SMTP2GO with proper Reply-To headers
  */
-async function sendEmailViaSMTP2GO(formData, config) {
-  const { html, text } = generateEmailTemplate(formData, config);
+async function sendEmailViaSMTP2GO(formData, config, referer = null) {
+  const { html, text } = generateEmailTemplate(formData, config, referer);
 
   // Generate subject line
   const subject = formData.subject
@@ -427,8 +429,11 @@ export default {
         );
       }
 
+      // Get referer for website identification
+      const referer = request.headers.get('Referer') || request.headers.get('Origin') || 'Unknown';
+
       // Send email
-      await sendEmailViaSMTP2GO(data, config);
+      await sendEmailViaSMTP2GO(data, config, referer);
 
       return createResponse(
         { success: true, message: config.success_message },
