@@ -28,7 +28,8 @@ cf-mailer is a configurable Cloudflare Worker that handles contact form submissi
 - Use descriptive function and variable names
 - Add JSDoc comments for all functions
 - Maintain consistent indentation and formatting
-- Don't use emojis in code or comments
+- Don't use emojis in code, comments, commits, or PRs
+- Use `gh` to make GitHub PR's from the command line
 
 ### Security Principles
 - Always validate and sanitize user input
@@ -155,6 +156,9 @@ return new Response(JSON.stringify(data), {
   }
 });
 ```
+
+## Workflows
+- "cleanup" or any derivation thereof means clean up temporary files, logs, and other artifacts then checkout main and rebase and delete the previous branch
 
 ## File Organization
 

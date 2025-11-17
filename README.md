@@ -225,6 +225,26 @@ Email templates are automatically generated with both HTML and text versions. Th
 
 Check your Cloudflare Workers logs in the dashboard for detailed error information.
 
+## Documentation
+
+### System Diagrams
+
+Comprehensive visual documentation is available in the `/docs/diagrams` directory:
+
+- **[Request Processing Flow](./docs/diagrams/request-flow.md)** - Complete form submission workflow
+- **[System Architecture](./docs/diagrams/system-architecture.md)** - High-level system overview  
+- **[Deployment Pipeline](./docs/diagrams/deployment-pipeline.md)** - CI/CD process and workflow
+- **[Error Handling States](./docs/diagrams/error-handling.md)** - Error conditions and responses
+- **[Data Flow](./docs/diagrams/data-flow.md)** - Data transformation stages
+- **[Security & Validation](./docs/diagrams/security-validation.md)** - Security measures and validation
+- **[Integration Patterns](./docs/diagrams/integration-patterns.md)** - Platform-specific implementations
+
+View the [complete documentation index](./docs/diagrams/README.md) for detailed explanations.
+
+### API Documentation
+
+See [docs/api.md](./docs/api.md) for detailed API reference including all endpoints, parameters, and response formats.
+
 ## Examples
 
 See the `/examples` directory for complete implementation examples:
@@ -236,4 +256,6 @@ See the `/examples` directory for complete implementation examples:
 
 ## License
 
-MIT License - see LICENSE file for details.
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
+
+See LICENSE file for details.
