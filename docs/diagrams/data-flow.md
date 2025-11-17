@@ -4,64 +4,25 @@ This diagram shows how data flows through the cf-mailer system from form submiss
 
 ```mermaid
 flowchart TD
-    subgraph "Browser"
-        FormData[Form Data<br/>- name<br/>- email<br/>- message<br/>- subject (optional)]
-        Browser[Web Browser]
-    end
+    FormData[Form Data] --> Browser[Web Browser]
+    Browser -->|POST Request| Headers[HTTP Headers]
+    Browser -->|Request Body| Body[Request Body]
     
-    subgraph "Request Processing"
-        Headers[HTTP Headers<br/>- Content-Type<br/>- Referer<br/>- Origin]
-        Body[Request Body<br/>JSON/FormData/Multipart]
-    end
-    
-    subgraph "cf-mailer Worker"
-        Parse[Data Parser<br/>- JSON.parse()<br/>- FormData.entries()<br/>- Multipart parsing]
-        
-        Validate[Field Validation<br/>- Required fields check<br/>- Email format validation<br/>- Length limits]
-        
-        Sanitize[Input Sanitization<br/>- HTML escape<br/>- XSS prevention<br/>- Trim whitespace]
-        
-        Website[Website Identification<br/>- Extract from Referer<br/>- Parse hostname<br/>- Default fallback]
-        
-        Templates[Template Generation<br/>- HTML email template<br/>- Plain text version<br/>- Include metadata]
-    end
-    
-    subgraph "Email Payload"
-        SMTPData[SMTP2GO Payload<br/>- to: recipient<br/>- from: sender<br/>- subject: form subject<br/>- html_body: template<br/>- text_body: plain text<br/>- reply_to: form email]
-    end
-    
-    subgraph "SMTP2GO Service"
-        API[SMTP2GO API<br/>- Authenticate request<br/>- Queue for delivery<br/>- Return response]
-        
-        Delivery[Email Delivery<br/>- SMTP transmission<br/>- Recipient server<br/>- Delivery confirmation]
-    end
-    
-    subgraph "Response Data"
-        Success[Success Response<br/>- 200 OK<br/>- JSON confirmation<br/>- CORS headers]
-        
-        Error[Error Response<br/>- 4xx/5xx status<br/>- Error description<br/>- CORS headers]
-    end
-
-    %% Data flow arrows
-    FormData --> Browser
-    Browser -->|POST Request| Headers
-    Browser -->|Request Body| Body
-    
-    Headers --> Parse
+    Headers --> Parse[Data Parser]
     Body --> Parse
-    Parse --> Validate
-    Validate --> Sanitize
-    Headers --> Website
+    Parse --> Validate[Field Validation]
+    Validate --> Sanitize[Input Sanitization]
+    Headers --> Website[Website Identification]
     
-    Sanitize --> Templates
+    Sanitize --> Templates[Template Generation]
     Website --> Templates
-    Templates --> SMTPData
+    Templates --> SMTPData[SMTP2GO Payload]
     
-    SMTPData --> API
-    API --> Delivery
+    SMTPData --> API[SMTP2GO API]
+    API --> Delivery[Email Delivery]
     
-    API -->|Success| Success
-    API -->|Error| Error
+    API -->|Success| Success[Success Response]
+    API -->|Error| Error[Error Response]
     Parse -->|Parse Error| Error
     Validate -->|Validation Error| Error
     
