@@ -1,4 +1,4 @@
-# CF-Mailer
+# cf-mailer
 
 A configurable Cloudflare Worker for handling contact forms with SMTP2GO integration and proper email functionality.
 
